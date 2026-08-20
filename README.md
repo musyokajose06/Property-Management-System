@@ -1,16 +1,17 @@
-# React + Vite
+# PROPERTY MANAGEMENT SYSTEM
+This is a property management system that allows users to manage properties, tenants, and leases. It provides features for adding, updating, and deleting properties, as well as managing tenant information and lease agreements.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+- Add, update, and delete properties
+- Manage tenant information
+- Create and manage lease agreements
+- Generate reports on properties, tenants, and leases
+- User authentication and authorization
+- Responsive design for mobile and desktop devices
 
-Currently, two official plugins are available:
+## Requirements
+- Python 3.x
+- Django 3.x
+- PostgreSQL or SQLite database
+- HTML, CSS, and JavaScript for frontend development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
