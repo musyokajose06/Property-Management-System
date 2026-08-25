@@ -1,3 +1,0 @@
-export default function Properties({ properties }) {
-  return <div className="content"><div className="section-heading"><div><p className="eyebrow">YOUR PORTFOLIO</p><h2>Properties at a glance.</h2></div><button className="primary">＋ Add property</button></div><div className="property-grid">{properties.map((property) => <article className="property-card" key={property.id}><div className="property-photo">{property.name.slice(0, 2).toUpperCase()}<small>ACTIVE</small></div><div className="property-body"><div><h3>{property.name}</h3><p>{property.address}</p></div><span>{property.units} units</span></div><div className="property-footer">Occupancy <b>92%</b><div className="bar"><span style={{ width: '92%' }} /></div></div></article>)}</div></div>
-}

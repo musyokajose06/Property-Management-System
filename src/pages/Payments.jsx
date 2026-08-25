@@ -1,5 +1,0 @@
-import { money } from '../utils/formatters.js'
-
-export default function Payments({ payments, manager, onPayment }) {
-  return <div className="content"><div className="section-heading"><div><p className="eyebrow">FINANCIALS</p><h2>{manager ? 'A clear view of every balance.' : 'Your payment trail.'}</h2></div><button className="secondary">Export report ↓</button></div><section className="panel table-panel"><div className="table-head"><span>Resident</span><span>Period</span><span>Amount</span><span>Status</span></div>{payments.map((payment) => <div className="table-row" key={payment.id}><div className="resident"><span className="payment-avatar">{payment.tenantName?.[0]}</span><span><b>{manager ? payment.tenantName : 'Rent payment'}</b><small>Due {payment.dueDate}</small></span></div><span>{payment.month}</span><strong>{money(payment.amount)}</strong><button className={`pill ${payment.status}`} onClick={() => manager && onPayment(payment)}>{payment.status}</button></div>)}</section></div>
-}
