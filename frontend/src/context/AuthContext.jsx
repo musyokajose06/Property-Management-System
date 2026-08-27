@@ -1,14 +1,55 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { db } from "../store/data.js";
 
-// Mock auth: there is no backend yet, so "logging in" just picks a role
-// (and, for tenants, which tenant record you are) and stores it in
-// localStorage. Swapping this for real JWT/session auth later only
-// touches this file — every page reads the role through useAuth().
 const AuthContext = createContext(null);
-const STORAGE_KEY = "keystone.session";
+const STORAGE_KEY = "rl.session";
+const USERS_KEY = "rl.users";
+
+const SEED_USERS = [
+  {
+    id: "a1",
+    role: "admin",
+    name: "Site Admin",
+    email: "admin@r3ntledger.com",
+    password: "admin123",
+  },
+  {
+    id: "m1",
+    role: "manager",
+    name: "Joseph Musyoka",
+    email: "manager@r3ntledger.com",
+    password: "manager123",
+  },
+  {
+    id: "t1",
+    role: "tenant",
+    name: "John Tenant",
+    email: "john@r3ntledger.com",
+    password: "tenant123",
+    tenantId: "t1",
+    unit: "A1",
+  },
+  {
+    id: "t2",
+    role: "tenant",
+    name: "Mary Tenant",
+    email: "mary@r3ntledger.com",
+    password: "tenant123",
+    tenantId: "t2",
+    unit: "B2",
+  },
+];
+
+function loadUsers() {
+  try {
+    const raw = localStorage.getItem(USERS_KEY);
+    return raw ? JSON.parse(raw) : SEED_USERS;
+  } catch {
+    return SEED_USERS;
+  }
+}
 
 export function AuthProvider({ children }) {
+  const [users, setUsers] = useState(loadUsers);
   const [session, setSession] = useState(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -26,18 +67,34 @@ export function AuthProvider({ children }) {
     }
   }, [session]);
 
-  function loginAsManager() {
-    setSession({ role: "manager", name: "Joseph Musyoka" });
+  useEffect(() => {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }, [users]);
+
+  // Returns null on success, error string on failure
+  function login(email, password) {
+    const user = users.find(
+      (u) =>
+        u.email.toLowerCase() === email.toLowerCase() &&
+        u.password === password
+    );
+    if (!user) return "Invalid email or password.";
+    const { password: _, ...safe } = user;
+    setSession(safe);
+    return null;
   }
 
-  function loginAsAdmin() {
-    setSession({ role: "admin", name: "Site Admin" });
-  }
-
-  function loginAsTenant(tenantId) {
-    const tenant = db.tenants.getAll().find((t) => t.id === tenantId);
-    if (!tenant) return;
-    setSession({ role: "tenant", tenantId: tenant.id, name: tenant.name });
+  // Returns null on success, error string on failure
+  function register(name, email, password, role) {
+    if (users.find((u) => u.email.toLowerCase() === email.toLowerCase()))
+      return "An account with this email already exists.";
+    const id = `${role[0]}${Date.now()}`;
+    const newUser = { id, role, name, email, password, ...(role === "tenant" ? { tenantId: id, unit: "" } : {}) };
+    const updated = [...users, newUser];
+    setUsers(updated);
+    const { password: _, ...safe } = newUser;
+    setSession(safe);
+    return null;
   }
 
   function logout() {
@@ -45,7 +102,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ session, loginAsManager, loginAsAdmin, loginAsTenant, logout }}>
+    <AuthContext.Provider value={{ session, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
