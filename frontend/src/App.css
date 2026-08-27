@@ -5,3 +5,5 @@ body { margin: 0; font-family: "Manrope", sans-serif; }
 h1, h2, h3, p { margin: 0; }
 button { cursor: pointer; border: 0; font: inherit; }
 input, textarea, select { font: inherit; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
