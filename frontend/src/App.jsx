@@ -31,8 +31,7 @@ const navItems = [
 ];
 
 function App() {
-  const { session, loginAsManager, loginAsAdmin, loginAsTenant, logout } =
-    useAuth();
+  const { session, logout } = useAuth();
   const [active, setActive] = useState("overview");
   const [, setVersion] = useState(0);
   const [showNotice, setShowNotice] = useState(false);
@@ -94,12 +93,7 @@ function App() {
 
   if (!session)
     return (
-      <Login
-        onManager={loginAsManager}
-        onAdmin={loginAsAdmin}
-        onTenant={loginAsTenant}
-        tenants={data.tenants}
-      />
+      <Login />
     );
 
   return (
