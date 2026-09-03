@@ -71,6 +71,32 @@ function App() {
     toast.success("Payment status updated");
   };
 
+  const addProperty = (e) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const newProp = {
+      id: `p${Date.now()}`,
+      name: form.get("name"),
+      address: form.get("address"),
+      units: Number(form.get("units")),
+      active: form.get("active") === "true",
+      managerId: session.id,
+    };
+    db.properties.save([...data.properties, newProp]);
+    e.currentTarget.reset();
+    refresh();
+    toast.success("Property added");
+    return true;
+  };
+
+  const updateLease = (tenantId, fields) => {
+    db.tenants.save(
+      data.tenants.map((t) => t.id === tenantId ? { ...t, ...fields } : t)
+    );
+    refresh();
+    toast.success("Lease updated");
+  };
+
   const addInquiry = (e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
@@ -186,7 +212,7 @@ function App() {
             />
           )}
           {active === "properties" && (
-            <Properties properties={data.properties} />
+            <Properties properties={data.properties} tenants={data.tenants} onAdd={addProperty} />
           )}
           {active === "tenants" && (
             <Tenants tenants={tenants} manager={manager} />
@@ -199,7 +225,7 @@ function App() {
             />
           )}
           {active === "leases" && (
-            <Leases tenants={tenants} manager={manager} />
+            <Leases tenants={tenants} manager={manager} properties={data.properties} onUpdateLease={updateLease} />
           )}
           {active === "inquiries" && (
             <Inquiries

@@ -119,16 +119,26 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("tenant");
+  const [propertyId, setPropertyId] = useState("");
+  const [unit, setUnit] = useState("");
+  const [leaseStart, setLeaseStart] = useState("");
+  const [leaseEnd, setLeaseEnd] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Read properties directly from localStorage (seeded before login)
+  const properties = (() => { try { return JSON.parse(localStorage.getItem("rl_properties")) || []; } catch { return []; } })();
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (role === "tenant" && !propertyId) { toast.error("Please select a property."); return; }
     setLoading(true);
-    const error = register(name.trim(), email.trim(), password, role);
+    const error = register(name.trim(), email.trim(), password, role, { propertyId, unit, leaseStart, leaseEnd });
     setLoading(false);
     if (error) toast.error(error);
     else toast.success(`Welcome, ${name.split(" ")[0]}!`);
   }
+
+  const inputCls = "w-full rounded-2xl border border-[#dfe8e1] bg-[#fafcfa] px-4 py-[13px] text-[0.85rem] text-[#202b27] shadow-sm outline-none transition-all focus:border-[#4b765c] focus:ring-2 focus:ring-[#4b765c]/20";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -136,6 +146,7 @@ function SignUp() {
       <TextInput label="Email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
       <PasswordInput label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
+      {/* Role selector */}
       <div className="flex flex-col gap-1">
         <FieldLabel>I am a…</FieldLabel>
         <div className="grid grid-cols-2 gap-2">
@@ -155,6 +166,46 @@ function SignUp() {
           ))}
         </div>
       </div>
+
+      {/* Tenant-only fields */}
+      {role === "tenant" && (
+        <>
+          <div className="flex flex-col gap-1">
+            <FieldLabel>Property</FieldLabel>
+            <select
+              required
+              value={propertyId}
+              onChange={(e) => setPropertyId(e.target.value)}
+              className={inputCls}
+            >
+              <option value="">— Select a property —</option>
+              {properties.filter((p) => p.active !== false).map((p) => (
+                <option key={p.id} value={p.id}>{p.name} — {p.address}</option>
+              ))}
+            </select>
+          </div>
+
+          <TextInput
+            label="Unit number"
+            type="text"
+            required
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+            placeholder="e.g. A1"
+          />
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+              <FieldLabel>Lease start</FieldLabel>
+              <input type="date" required value={leaseStart} onChange={(e) => setLeaseStart(e.target.value)} className={inputCls} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <FieldLabel>Lease end</FieldLabel>
+              <input type="date" required value={leaseEnd} onChange={(e) => setLeaseEnd(e.target.value)} className={inputCls} />
+            </div>
+          </div>
+        </>
+      )}
 
       <button type="submit" disabled={loading} className="mt-2 w-full rounded-2xl bg-[#4b765c] py-[13px] text-[0.75rem] font-bold text-white shadow-sm transition-colors hover:bg-[#3d6050] disabled:opacity-60">
         {loading ? "Creating account…" : "Create account →"}
@@ -176,9 +227,9 @@ export default function Login() {
           <strong className="font-extrabold">R3NT<span className="text-[#4b765c]">LEDGER</span></strong>
         </div>
 
-        <p className="mb-[18px] mt-[18px] font-mono text-[0.63rem] font-medium uppercase tracking-[0.15em] text-[#92a09a]">
+        {/* <p className="mb-[18px] mt-[18px] font-mono text-[0.63rem] font-medium uppercase tracking-[0.15em] text-[#92a09a]">
           PROPERTY OPERATIONS, REFINED
-        </p>
+        </p> */}
 
         <h1 className="max-w-[500px] text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.06em] text-[#202b27]">
           Everything under one roof.
@@ -189,7 +240,7 @@ export default function Login() {
         </p>
 
         {/* Tab toggle */}
-        <div className="mb-5 flex rounded-2xl border border-[#dfe8e1] bg-white p-1 shadow-sm">
+        <div className="mb-2 flex rounded-2xl border border-[#dfe8e1] bg-white p-1 shadow-sm">
           {[["signin", "Sign in"], ["signup", "Sign up"]].map(([key, label]) => (
             <button
               key={key}
@@ -210,8 +261,8 @@ export default function Login() {
       {/* Right art panel */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[#365849] to-[#91ad96] p-[10%] after:absolute after:left-[23%] after:top-[18%] after:h-[65%] after:w-[51%] after:-skew-x-[14deg] after:border after:border-white/35 after:content-['']">
         <div className="absolute bottom-[12%] z-10 text-white">
-          <span className="font-mono text-[0.75rem]">01</span>
-          <strong className="mt-[15px] block text-[2.5rem] font-extrabold leading-[1] tracking-[-0.07em]">
+          <span className="font-mono text-[1.5rem]">01</span>
+          <strong className="mt-[15px] block text-[3.5rem] font-extrabold leading-[1] tracking-[-0.07em]">
             A better rhythm<br />for every resident.
           </strong>
         </div>

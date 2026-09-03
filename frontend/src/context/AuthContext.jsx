@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { db } from "../store/data.js";
 
 const AuthContext = createContext(null);
 const STORAGE_KEY = "rl.session";
@@ -85,13 +86,32 @@ export function AuthProvider({ children }) {
   }
 
   // Returns null on success, error string on failure
-  function register(name, email, password, role) {
+  function register(name, email, password, role, tenantFields = {}) {
     if (users.find((u) => u.email.toLowerCase() === email.toLowerCase()))
       return "An account with this email already exists.";
     const id = `${role[0]}${Date.now()}`;
-    const newUser = { id, role, name, email, password, ...(role === "tenant" ? { tenantId: id, unit: "" } : {}) };
-    const updated = [...users, newUser];
-    setUsers(updated);
+    const newUser = { id, role, name, email, password, ...(role === "tenant" ? { tenantId: id, unit: tenantFields.unit || "" } : {}) };
+    setUsers((prev) => [...prev, newUser]);
+
+    // Write tenant record into rl_tenants so it shows up for managers
+    if (role === "tenant") {
+      const existing = db.tenants.getAll();
+      db.tenants.save([
+        ...existing,
+        {
+          id,
+          name,
+          email,
+          unit: tenantFields.unit || "",
+          propertyId: tenantFields.propertyId || "",
+          leaseStart: tenantFields.leaseStart || "",
+          leaseEnd: tenantFields.leaseEnd || "",
+          leaseStatus: "active",
+          leaseApproval: "pending",
+        },
+      ]);
+    }
+
     const { password: _, ...safe } = newUser;
     setSession(safe);
     return null;

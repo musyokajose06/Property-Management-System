@@ -20,6 +20,28 @@ This is a property management system that allows users to manage properties, ten
 
 ## Requirements
 - Python 3.x
-- Django 3.x
-- PostgreSQL or SQLite database
-- HTML, CSS, and JavaScript for frontend development
+- SQLite (included) or PostgreSQL
+
+## Backend API
+
+The Django backend lives in `backend/` and uses JWT authentication.
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py seed_demo
+python manage.py runserver
+```
+
+Authentication endpoints are `POST /api/auth/login`, `POST /api/auth/register`,
+and `POST /api/auth/refresh`. CRUD endpoints are available under
+`/api/users/`, `/api/properties/`, `/api/tenants/`, `/api/leases/`,
+`/api/payments/`, `/api/inquiries/`, and `/api/warnings/`.
+
+Login accepts `email` and `password`; successful responses include `access`,
+`refresh`, and a serialized `user` object. CRUD requests require the access
+token in an `Authorization: Bearer <token>` header.

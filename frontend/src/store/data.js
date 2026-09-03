@@ -4,8 +4,8 @@ const set = (key, val) => localStorage.setItem(key, JSON.stringify(val))
 export const seedData = () => {
   if (localStorage.getItem('rl_seeded')) return
   set('rl_properties', [
-    { id: 'p1', name: 'Sunset Apartments', address: '123 Sunset Blvd', units: 10, managerId: 'm1' },
-    { id: 'p2', name: 'Green Valley', address: '456 Valley Rd', units: 8, managerId: 'm1' },
+    { id: 'p1', name: 'Sunset Apartments', address: '123 Sunset Blvd', units: 10, managerId: 'm1', active: true },
+    { id: 'p2', name: 'Green Valley', address: '456 Valley Rd', units: 8, managerId: 'm1', active: true },
   ])
   set('rl_tenants', [
     { id: 't1', name: 'John Tenant', email: 'tenant1@r3nt.com', unit: 'A1', propertyId: 'p1', leaseStart: '2024-01-01', leaseEnd: '2025-12-01', leaseStatus: 'active', leaseApproval: 'approved' },
