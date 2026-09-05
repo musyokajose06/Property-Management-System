@@ -26,6 +26,10 @@ export const seedData = () => {
     { id: 'pl1', tenantId: 't1', tenantName: 'John Tenant', amount: 1200, frequency: 'monthly', nextDue: '2025-03-01' },
     { id: 'pl2', tenantId: 't2', tenantName: 'Mary Tenant', amount: 1100, frequency: 'monthly', nextDue: '2025-03-01' },
   ])
+  set('rl_notices', [
+    { id: 'n1', title: 'Rent Due Reminder', body: 'Please ensure rent is paid by the 1st of every month to avoid late fees.', date: '2025-01-20', author: 'Joseph Musyoka' },
+    { id: 'n2', title: 'Water Maintenance', body: 'Water will be shut off on Jan 25th from 9am–1pm for routine maintenance.', date: '2025-01-18', author: 'Joseph Musyoka' },
+  ])
   set('rl_seeded', true)
 }
 
@@ -36,4 +40,5 @@ export const db = {
   warnings:   { getAll: () => get('rl_warnings', []),   save: v => set('rl_warnings', v) },
   payments:   { getAll: () => get('rl_payments', []),   save: v => set('rl_payments', v) },
   plans:      { getAll: () => get('rl_plans', []),      save: v => set('rl_plans', v) },
+  notices:    { getAll: () => get('rl_notices', []),    save: v => set('rl_notices', v) },
 }

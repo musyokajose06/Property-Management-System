@@ -101,7 +101,7 @@ export default function Leases({ tenants, manager, properties = [], onUpdateLeas
   const [editing, setEditing] = useState(null);
 
   return (
-    <div style={{ padding: "0 6% 70px" }}>
+    <div className="px-4 pb-[70px] pt-4 md:px-[6%] md:pt-0">
       <div className="mb-[19px]">
         <p className="mb-[10px] font-mono text-[0.63rem] font-medium uppercase tracking-[0.15em] text-[#92a09a]">
           LEASE MANAGEMENT

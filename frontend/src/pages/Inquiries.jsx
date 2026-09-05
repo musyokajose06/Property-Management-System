@@ -1,6 +1,6 @@
 export default function Inquiries({ inquiries, manager, onSubmit }) {
   return (
-    <div style={{ padding: "0 6% 70px" }}>
+    <div className="px-4 pb-[70px] pt-4 md:px-[6%] md:pt-0">
       <div className="mb-[19px] flex items-end justify-between">
         <div>
           <p className="mb-[10px] font-mono text-[0.63rem] font-medium uppercase tracking-[0.15em] text-[#92a09a]">
@@ -12,10 +12,7 @@ export default function Inquiries({ inquiries, manager, onSubmit }) {
         </div>
       </div>
 
-      <div
-        className="grid gap-4"
-        style={{ gridTemplateColumns: manager ? "1fr" : "1.5fr 1fr" }}
-      >
+      <div className={`grid gap-4 ${manager ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[1.5fr_1fr]"}`}>
         {/* Inquiry list */}
         <section className="bg-white p-[23px]">
           {inquiries.length === 0 && (

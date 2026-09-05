@@ -16,9 +16,9 @@ export default function Overview({
   const paidPct = Math.round((paid / Math.max(payments.length, 1)) * 100);
 
   return (
-    <div className="pb-[70px]" style={{ padding: "0 6% 70px" }}>
+    <div className="px-4 pb-[70px] pt-4 md:px-[6%] md:pt-0">
       {/* Welcome band */}
-      <div className="mb-[23px] flex items-center justify-between bg-[#dcebe0] px-[22px] py-[19px]">
+      <div className="mb-[23px] flex flex-col gap-2 bg-[#dcebe0] px-[22px] py-[19px] sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span className="mr-[7px] text-[0.75rem] text-[#4b765c]">●</span>
           Portfolio snapshot
@@ -35,7 +35,7 @@ export default function Overview({
       </div>
 
       {/* Metrics */}
-      <div className="mb-[54px] grid grid-cols-4 gap-3">
+      <div className="mb-[54px] grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Metric
           index={0}
           label={manager ? "Total collected" : "Paid this cycle"}
@@ -85,10 +85,7 @@ export default function Overview({
       </div>
 
       {/* Dashboard grid */}
-      <div
-        className="grid gap-[14px]"
-        style={{ gridTemplateColumns: "1.3fr 1fr" }}
-      >
+      <div className="grid gap-[14px] grid-cols-1 lg:grid-cols-[1.3fr_1fr]">
         {/* Payment panel */}
         <section className="bg-white p-[23px]">
           <PanelTitle

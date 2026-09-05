@@ -218,9 +218,9 @@ export default function Login() {
   const [tab, setTab] = useState("signin");
 
   return (
-    <main className="grid h-screen grid-cols-2 overflow-hidden bg-[#e9f1eb]">
+    <main className="flex h-screen flex-col overflow-hidden bg-[#e9f1eb] md:grid md:grid-cols-2">
       {/* Left panel */}
-      <div className="no-scrollbar flex max-h-screen flex-col justify-center overflow-y-auto px-[8%] py-[5%]">
+      <div className="no-scrollbar flex max-h-screen flex-col justify-center overflow-y-auto px-6 py-8 md:px-[8%] md:py-[5%]">
         {/* Brand */}
         <div className="mb-2 flex items-center gap-[10px] text-[1.05rem] tracking-[-0.05em]">
           <b className="flex h-[33px] w-[33px] flex-shrink-0 items-center justify-center rounded-xl bg-[#4b765c] text-[1.2rem] font-bold text-white">R</b>
@@ -258,8 +258,8 @@ export default function Login() {
         {tab === "signin" ? <SignIn /> : <SignUp />}
       </div>
 
-      {/* Right art panel */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#365849] to-[#91ad96] p-[10%] after:absolute after:left-[23%] after:top-[18%] after:h-[65%] after:w-[51%] after:-skew-x-[14deg] after:border after:border-white/35 after:content-['']">
+      {/* Right art panel — hidden on mobile */}
+      <div className="relative hidden overflow-hidden bg-gradient-to-br from-[#365849] to-[#91ad96] p-[10%] after:absolute after:left-[23%] after:top-[18%] after:h-[65%] after:w-[51%] after:-skew-x-[14deg] after:border after:border-white/35 after:content-[''] md:block">
         <div className="absolute bottom-[12%] z-10 text-white">
           <span className="font-mono text-[1.5rem]">01</span>
           <strong className="mt-[15px] block text-[3.5rem] font-extrabold leading-[1] tracking-[-0.07em]">

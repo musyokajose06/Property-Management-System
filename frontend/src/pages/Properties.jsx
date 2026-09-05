@@ -150,7 +150,7 @@ export default function Properties({ properties, tenants = [], onAdd }) {
   const selectedIndex = selected ? properties.findIndex((p) => p.id === selected.id) : -1;
 
   return (
-    <div style={{ padding: "0 6% 70px" }}>
+    <div className="px-4 pb-[70px] pt-4 md:px-[6%] md:pt-0">
       <div className="mb-[19px] flex items-end justify-between">
         <div>
           <p className="mb-[10px] font-mono text-[0.63rem] font-medium uppercase tracking-[0.15em] text-[#92a09a]">
@@ -166,7 +166,7 @@ export default function Properties({ properties, tenants = [], onAdd }) {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {properties.map((property, i) => {
           const occupied = tenants.filter((t) => t.propertyId === property.id).length;
           const pct = property.units > 0 ? Math.round((occupied / property.units) * 100) : 0;
